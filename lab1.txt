@@ -1,0 +1,54 @@
+1.
+SELECT staff_name,staff_sal,dept_code FROM staff_masters WHERE 
+dept_code IN (20,30,40);
+2.
+SELECT staff_name"a",staff_code"b",dept_code"c",staff_sal"d",design_code"e",hiredate"f",staff_dob"g",
+staff_address"h",mgr_code"i" FROM staff_masters;
+3.
+SELECT student_code,subject1,subject2,subject3,
+(subject1+subject2+subject3)"total_marks" FROM student_marks;
+4.
+SELECT * FROM staff_masters WHERE design_code IN (SELECT design_code
+ FROM designation_masters WHERE design_name IN('Professor','Lecturer'));
+5.
+SELECT staff_code,staff_name,dept_code FROM staff_masters WHERE
+ (SYSDATE-HIREDATE)/365>18;
+6.
+SELECT s.staff_name,d.design_name FROM staff_masters s,designation_masters d 
+WHERE s.design_code=d.design_code AND 
+hiredate < to_date('31-dec-2002','DD-MM-YYYY');
+7.
+ SELECT s.staff_name,d.design_name,(s.staff_sal*10)"income_10" FROM staff_masters s,
+designation_masters d WHERE s.design_code=d.design_code AND dept_code IN (10,30);
+8.
+SELECT staff_name,((sysdate-hiredate)/365)"experience" FROM staff_masters
+ WHERE design_code
+ IN (SELECT design_code FROM designation_masters WHERE design_name = 'Lecturer');
+9.
+ SELECT (student_name||', '||dept_code)"Student_info" FROM student_masters;
+10.
+SELECT staff_name,staff_sal FROM staff_masters WHERE 
+staff_sal BETWEEN 12000 AND 25000 ORDER BY staff_sal,staff_name;
+11.
+SELECT * FROM staff_masters WHERE mgr_code IS NULL;
+12.
+SELECT student_name,dept_code,student_dob FROM student_masters WHERE 
+student_dob BETWEEN TO_DATE('01-JANUARY-1981','DD-MONTH-YYYY') AND 
+TO_DATE('31-MARCH-1983','DD-MONTH-YYYY') ORDER BY student_dob;
+13.
+SELECT dept_code,SUM(staff_sal) FROM staff_masters WHERE staff_sal IN 
+(SELECT staff_sal FROM staff_masters WHERE staff_code NOT IN(SELECT mgr_code 
+FROM staff_masters)) GROUP BY dept_code HAVING SUM(staff_sal)>20000;
+14.
+SELECT * FROM book_masters WHERE book_code IN
+(SELECT book_code FROM book_transactions WHERE 
+(book_actual_return_date NOT IN 
+(SELECT book_actual_return_date FROM book_transactions)) AND 
+(book_expected_return_date IN (SELECT NEXT_DAY(SYSDATE,'monday')-7 FROM dual)));
+15.
+SELECT student_name,NVL(dept_code,'No_Department')"Department" FROM student_masters;
+16.
+SELECT staff_name,RPAD(' ',1+(staff_sal/1000),'X')"salary" FROM staff_masters;
+
+
+

@@ -1,0 +1,54 @@
+1.
+SELECT student_name,TO_CHAR(student_dob,'MONTH,DD YYYY')"dob" FROM 
+student_masters WHERE TO_CHAR(student_dob,'DY') IN ('SAT','SUN');
+2.
+ SELECT staff_name,ROUND(months_between(sysdate,hiredate))"months worked" 
+FROM staff_masters ORDER BY months_between(sysdate,hiredate);
+3.
+SELECT * FROM staff_masters WHERE staff_name LIKE 'A%S';
+4.
+SELECT staff_name,design_code FROM staff_masters WHERE staff_name 
+LIKE (('_N%')OR('__N%')) AND (('%N') OR ('%S'));
+5.
+SELECT staff_name,RPAD(staff_sal,15,'$')"staff_salary" FROM staff_masters;
+6.
+SELECT staff_name FROM staff_masters WHERE staff_name LIKE '%!_%' ESCAPE'!';
+7.
+ SELECT * FROM staff_masters WHERE TO_CHAR(hiredate,'MM') IN (01);
+8.
+9.
+SELECT staff_name,hiredate,TO_CHAR(hiredate,'DAY')"DAY" FROM staff_masters 
+ORDER BY MOD(TO_CHAR(hiredate, 'D') + 5, 7);
+10.
+ SELECT staff_name,RPAD(' ',LENGTH(staff_name)+1,'*')"asterisk" FROM staff_masters;
+11.
+SELECT staff_name,SUBSTR(staff_name,0,1)||RPAD('*',LENGTH(staff_name)-3,'*')
+||SUBSTR(staff_name,-1,1)"coded_name" FROM staff_masters;
+12.
+SELECT * FROM staff_masters WHERE TO_CHAR(hiredate,'DD') BETWEEN 1 AND 15;
+13.
+(same as 9)
+SELECT staff_name,hiredate,TO_CHAR(hiredate,'DAY')"DAY" FROM staff_masters 
+ORDER BY MOD(TO_CHAR(hiredate, 'D') + 5, 7);
+14.
+15.
+SELECT TO_CHAR(TRUNC(NEXT_DAY(LAST_DAY(SYSDATE)-7,'FRIDAY')),
+'fmddspth "of" MONTH","YYYY')"PAY_DATE" FROM dual;
+16.
+SELECT ROUND(MAX(staff_sal))"Maximum",ROUND(MIN(staff_sal))"Minimum",
+ROUND(SUM(staff_sal))"Total",ROUND(AVG(staff_sal))"Average" FROM staff_masters;
+17.
+SELECT d.dept_name,MAX(s.staff_sal)"Maximum",MIN(s.staff_sal)"Minimum",
+SUM(s.staff_sal)"Total",AVG(s.staff_sal)"Average" FROM staff_masters s,
+department_master d WHERE s.dept_code=d.dept_code GROUP BY d.dept_name;
+18.
+SELECT s.dept_code,d.dept_name,COUNT(s.staff_code)"number of people" FROM 
+staff_masters s,department_masters d WHERE s.dept_code=d.dept_code GROUP BY 
+s.dept_code,d.dept_name;
+19.
+SELECT COUNT(DISTINCT(mgr_code))"total number of managers" FROM staff_masters;
+20.
+SELECT e.mgr_code,m.staff_name,MIN(e.staff_sal) FROM staff_masters e,
+staff_masters m WHERE e.mgr_code=m.staff_code GROUP BY e.mgr_code,m.staff_name 
+HAVING MIN(e.staff_sal)>10000 ORDER BY MIN(e.staff_sal) DESC;
+
